@@ -52,9 +52,8 @@ public class Profile {
             anyMatches |= match;
             // ...
         }
-        if (kill)
-            return false;
-        return anyMatches;
+
+        return !kill && anyMatches;
     }
 
     public int score() {
