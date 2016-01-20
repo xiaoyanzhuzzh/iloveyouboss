@@ -38,59 +38,123 @@ public class ProfileTest {
         when(mockedCriterion2.getAnswer()).thenReturn(mockedAnswer2);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @Test
+    public void return_false_and_score_is_0_when_criteria_is_empty() {
 
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(false));
     }
 
     @Test
-    public void killedWhenCriteriaAllAreMustMatchAndNoMath() {
+    public void return_true_and_score_is_0_when_criteria_length_is_1_and_it_is_do_not_care() {
+
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.DontCare);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(true));
+    }
+
+    @Test
+    public void return_true_and_score_is_max_when_criteria_length_is_1_and_it_is_must_match_and_it_matches() {
+
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.MustMatch);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(2147483647));
+        assertThat(isMatched, equalTo(true));
+    }
+
+    @Test
+    public void return_false_and_score_is_0_when_criteria_length_is_1_and_it_is_must_match_and_it_do_not_match() {
+
         when(mockedCriterion1.getWeight()).thenReturn(Weight.MustMatch);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
         criteria.add(mockedCriterion1);
 
-        boolean matches = profile.matches(criteria);
-        assertThat(matches, equalTo(false));
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(false));
     }
 
     @Test
-    public void notKilledAndAnyMatchedWhenOneOfCriteriaIsDoNotCare() {
-        when(mockedCriterion1.getWeight()).thenReturn(Weight.DontCare);
-        when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
+    public void return_true_and_score_is_100_when_criteria_length_is_1_and_it_is_would_prefer_and_it_matches() {
 
-        when(mockedCriterion2.getWeight()).thenReturn(Weight.WouldPrefer);
-        when(mockedAnswer2.match(any(Answer.class))).thenReturn(false);
-
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.WouldPrefer);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
         criteria.add(mockedCriterion1);
-        criteria.add(mockedCriterion2);
 
-        boolean matches = profile.matches(criteria);
-        assertThat(matches, equalTo(true));
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(100));
+        assertThat(isMatched, equalTo(true));
     }
 
     @Test
-    public void notKilledAndNothingMatchedWhen() {
+    public void return_false_and_score_is_0_when_criteria_length_is_1_and_it_is_would_prefer_and_it_do_not_match() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.WouldPrefer);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
         criteria.add(mockedCriterion1);
 
-        boolean matches = profile.matches(criteria);
-        assertThat(matches, equalTo(false));
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(false));
     }
 
     @Test
-    public void scoreStayedWhen() {
+    public void return_true_and_score_is_5000_when_criteria_length_is_1_and_it_is_very_important_and_it_matches() {
 
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.VeryImportant);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(5000));
+        assertThat(isMatched, equalTo(true));
     }
 
     @Test
-    public void scoreIncreasedWhen() {
+    public void return_false_and_score_is_0_when_criteria_length_is_1_and_it_is_very_important_and_it_do_not_match() {
 
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.VeryImportant);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(false));
     }
 
     @Test
-    public void returnTrueAndScoreIs0WhenCriteriaAllDoNotCare() {
+    public void return_true_and_score_is_1000_when_criteria_length_is_1_and_it_is_important_and_it_matches() {
+
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.Important);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(1000));
+        assertThat(isMatched, equalTo(true));
+    }
+
+    @Test
+    public void return_false_and_score_is_0_when_criteria_length_is_1_and_it_is_important_and_it_do_not_match() {
+
+        when(mockedCriterion1.getWeight()).thenReturn(Weight.Important);
+        when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
+        criteria.add(mockedCriterion1);
+
+        Boolean isMatched = profile.matches(criteria);
+        assertThat(profile.score(), equalTo(0));
+        assertThat(isMatched, equalTo(false));
+    }
+
+    @Test
+    public void return_true_and_score_is_0_when_criteria_all_do_not_care() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.DontCare);
         when(mockedCriterion2.getWeight()).thenReturn(Weight.DontCare);
