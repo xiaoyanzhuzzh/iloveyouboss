@@ -104,7 +104,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnFalseAndScoreIs0WhenOneOfCriteriaIsDoNotCare() {
+    public void return_false_and_score_is_0_when_one_of_criteria_do_not_care() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.DontCare);
         when(mockedCriterion2.getWeight()).thenReturn(Weight.MustMatch);
@@ -119,7 +119,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnTrueAndScoreIsMaxWhenOneOfCriteriaMustMatchAndNotMatch() {
+    public void return_true_and_score_is_max_when_one_of_criteria_must_match_and_not_match() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.DontCare);
         when(mockedCriterion2.getWeight()).thenReturn(Weight.MustMatch);
@@ -134,7 +134,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnFalseAndScoreIs0WhenCriteriaAllAreMustMatchAndNoOneMath() {
+    public void return_false_and_score_is_0_when_criteria_are_all_must_match_and_no_one_match() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.MustMatch);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(false);
@@ -151,7 +151,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnFalseAndScoreIsMaxWhenCriteriaAllAreMustMatchAndOneNotMath() {
+    public void return_false_and_score_is_max_when_criteria_are_all_must_match_and_one_not_match() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.MustMatch);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
@@ -168,7 +168,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnTrueAndScoreIs0WhenCriteriaAllAreMustMatchAndAllMath() {
+    public void return_true_and_score_is_0_when_criteria_all_are_must_match_and_all_match() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.MustMatch);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
@@ -185,7 +185,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void returnTrueAndScoreIs200WhenCriteriaAllMathWouldPrefer() {
+    public void return_true_and_score_is_200_when_criteria_all_match_would_prefer() {
 
         when(mockedCriterion1.getWeight()).thenReturn(Weight.WouldPrefer);
         when(mockedAnswer1.match(any(Answer.class))).thenReturn(true);
